@@ -1,0 +1,199 @@
+<!--1,8-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:cursive;
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
+/* photo walls */
+.photo-wall{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+}
+
+.photo-wall img{
+    position:absolute;
+    width:200px;
+    max-width:28vw;
+    border-radius:22px;
+    opacity:0.9;
+    
+    animation:floatPhoto 12s ease-in-out infinite;
+}
+
+/* positions */
+.photo-wall img:nth-child(1){ left:5%; top:15%; }
+.photo-wall img:nth-child(2){ right:5%; top:20%; }
+.photo-wall img:nth-child(3){ left:8%; bottom:15%; }
+.photo-wall img:nth-child(4){ right:8%; bottom:12%; }
+
+.before-yes{
+    transition:opacity 1.2s ease;
+}
+
+.after-yes{
+    opacity:0;
+    transition:opacity 1.2s ease;
+}
+
+@keyframes floatPhoto{
+    0%{
+        transform: translateY(0) scale(1) rotate(-2deg);
+    }
+    50%{
+        transform: translateY(-18px) scale(1.08) rotate(2deg);
+    }
+    100%{
+        transform: translateY(0) scale(1) rotate(-2deg);
+    }
+}
+
+
+
+/* common box */
+.box{
+    background:rgba(255,255,255,0.25);
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* buttons */
+button{
+    padding:15px 35px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    cursor:pointer;
+    margin:15px;
+}
+.yes{
+    background:white;
+    color:#ff4d6d;
+}
+.no{
+    background:#ff4d6d;
+    color:white;
+}
+
+/* hidden main content */
+#mainContent{
+    display:none;
+}
+
+img{
+    width:180px;
+    border-radius:20px;
+    margin-bottom:15px;
+}
+
+/* floating hearts */
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:22px;
+    animation:float 6s linear infinite;
+    pointer-events:none;
+}
+@keyframes float{
+    to{
+        transform:translateY(-100vh);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+<!-- 📸 PHOTOS BEFORE YES -->
+<div class="photo-wall before-yes">
+    <img src="1.webp">
+    <img src="8.webp">
+    <img src="10.webp">
+    <img src="3.webp">
+</div>
+
+<!-- 💖 PHOTOS AFTER YES -->
+<div class="photo-wall after-yes">
+    <img src="6.webp">
+    <img src="7.webp">
+    <img src="4.webp">
+    <img src="9.webp">
+</div>
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="tumjoaaye.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 💬 FIRST QUESTION -->
+<div class="box" id="askBox">
+    <h1>Ek baat puchni thi… 🥺💖</h1>
+    <p>Kya tum mera banayi hui chiz dekhna chahoge?</p>
+    <button class="yes" onclick="startExperience()">YES 💕</button>
+    <button class="no" onclick="alert('Please naaa 😭💔')">NO 😜</button>
+</div>
+
+<!-- 💖 ACTUAL INDEX CONTENT -->
+<div class="box" id="mainContent">
+     <div class="center-photo">
+        <img src="22.jpg" alt="Our Special Moment">
+        </div>
+        <h1>Hey Bhupendra jii 💖</h1>
+    <p>From a Ludo game… to my heart 💘</p>
+    <a href="questions.html" style="
+        display:inline-block;
+        margin-top:20px;
+        padding:15px 30px;
+        background:white;
+        color:#ff4d6d;
+        text-decoration:none;
+        border-radius:30px;
+        font-size:18px;
+    ">Start 💕</a>
+</div>
+
+<script>
+function startExperience(){
+    const music = document.getElementById("bgMusic");
+    music.volume = 0.7;
+
+    music.play().then(()=>{
+        document.getElementById("askBox").style.display="none";
+        document.getElementById("mainContent").style.display="block";
+
+        // 👇 switch photos
+        document.querySelector(".before-yes").style.opacity = "0";
+        document.querySelector(".after-yes").style.opacity = "1";
+    });
+}
+
+/* floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},300);
+</script>
+
+</body>
+</html>

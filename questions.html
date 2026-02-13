@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Little Quiz 💖</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+    background: linear-gradient(-45deg, #ffdde1, #ee9ca7, #ffb6c1, #ffc0cb);
+    background-size: 400% 400%;
+    animation: romanticWave 12s ease infinite;
+}
+
+.page{
+    display:flex;
+    align-items:center;
+    gap:30px;
+}
+.side-images{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.side-images img{
+    width:220px;
+    height:150px;
+    object-fit:cover;
+    border-radius:18px;
+        opacity:0.95;
+    box-shadow:0 10px 25px rgba(0,0,0,0.25);
+    animation: slowZoom 14s ease-in-out infinite, floatSide 5s ease-in-out infinite;
+}
+
+/* zoom animation */
+@keyframes slowZoom{
+    0%{ transform: scale(1); }
+    50%{ transform: scale(1.12); }
+    100%{ transform: scale(1); }
+}
+
+@keyframes floatSide{
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-12px); }
+    100%{ transform: translateY(0); }
+}
+
+#box{
+    position:relative;
+    background:white;
+    padding:35px;
+    border-radius:25px;
+    text-align:center;
+    width:340px;
+    box-shadow:
+        0 0 15px rgba(255,77,109,0.6),
+        0 0 30px rgba(255,77,109,0.4),
+        0 0 60px rgba(255,77,109,0.2);
+    animation: glow 3s ease-in-out infinite;
+    z-index:2;
+}
+
+/* glowing animation */
+@keyframes glow{
+    0%{
+        box-shadow:
+        0 0 15px rgba(255,77,109,0.5),
+        0 0 30px rgba(255,77,109,0.3),
+        0 0 60px rgba(255,77,109,0.2);
+    }
+    50%{
+        box-shadow:
+        0 0 25px rgba(255,77,109,0.9),
+        0 0 50px rgba(255,77,109,0.6),
+        0 0 90px rgba(255,77,109,0.4);
+    }
+    100%{
+        box-shadow:
+        0 0 15px rgba(255,77,109,0.5),
+        0 0 30px rgba(255,77,109,0.3),
+        0 0 60px rgba(255,77,109,0.2);
+    }
+}
+
+/* QUESTION ANIMATION */
+.question-animate{
+    animation: questionPop 0.8s ease;
+}
+
+@keyframes questionPop{
+    0%{ transform: scale(0.7); opacity:0; }
+    100%{ transform: scale(1); opacity:1; }
+}
+
+
+button{
+    display:block;
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:25px;
+    background:#ffd6e0;
+    color:#ff4d6d;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff4d6d;
+    color:white;
+}
+/* OPTION ANIMATION */
+.option-animate{
+    animation: fadeSlide 0.6s ease forwards;
+    opacity:0;
+}
+
+@keyframes fadeSlide{
+    from{ transform: translateY(20px); opacity:0; }
+    to{ transform: translateY(0); opacity:1; }
+}
+
+
+h1{
+    color:#ff4d6d;
+    font-size:24px;
+}
+
+#compliment{
+    margin-top:15px;
+    font-size:18px;
+    color:#ff4d6d;
+    min-height:30px;
+}
+
+/* SPARKLES */
+.sparkle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    animation: sparkleAnim 1.5s linear forwards;
+    pointer-events:none;
+}
+
+@keyframes sparkleAnim{
+    0%{
+        transform:scale(0.5);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-40px) scale(1.5);
+        opacity:0;
+    }
+}
+@keyframes romanticWave{
+    0%{ background-position: 0% 50%; }
+    50%{ background-position: 100% 50%; }
+    100%{ background-position: 0% 50%; }
+}
+.floating-question-global{
+    position: absolute;
+    font-size: 20px;
+    color: #ff4d6d;
+    opacity: 0.7;
+    animation: floatQuestionGlobal 3s linear forwards;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes floatQuestionGlobal {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-80px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+    <div class="page">
+
+    <!-- LEFT IMAGES -->
+    <div class="side-images">
+        <img src="16.jpg">
+        
+    </div>
+
+    <!-- QUIZ BOX -->
+    <div id="box">
+        <h1 id="question"></h1>
+        <div id="options"></div>
+        <div id="compliment"></div>
+    </div>
+
+    <!-- RIGHT IMAGES -->
+    <div class="side-images">
+        <img src="17.jpg">
+        
+    </div>
+
+</div>
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+    <source src="raabta.mp3" type="audio/mpeg">
+    Your browser does not support audio.
+</audio>
+
+<script>
+const quiz = [
+         {
+        q: "When did we meet for the first time? 🥰",
+        options: ["14 Feb", "31 July 2024 📅", "1 Aug", "My birthday"],
+        answer: 1,
+        compliment: "Tum toh dil ke saath dimaag bhi jeet rahe ho 🫶"
+    },
+    {
+        q: "Where did we first talk properly? 💬",
+        options: ["Instagram", "College", "WhatsApp", "Ludo game 🎲"],
+        answer: 3,
+        compliment: "Awww 🥹 tum yaadein kitni achhi rakhte ho 💖"
+    },
+    {
+        q: "What made you start liking me first? 😌",
+        options: ["My looks 😏", "My voice 🎶", "My attitude", "My jokes"],
+        answer: 1,
+        compliment: "Hehe 😭 mujhe pata tha tumhe meri awaaz pasand hai 💕"
+    },
+    {
+        q: "Which song melted me the most? 🎵",
+        options: ["Shayad", "Kesariya", "Dil Jaaniye 💞", "Raataan Lambiyan"],
+        answer: 2,
+        compliment: "OMG 😭 uss din toh main sach me pighal gayi thi 💘"
+    },
+
+    {
+  q: "What do I love doing the most? 💖",
+  options: ["Sleeping 😴", "Talking to you 🥰", "Scrolling reels", "Overthinking"],
+  answer: 1,
+  compliment: "Haan bas tum hi ho meri addiction 😭💕"
+},
+{
+  q: "What scares me the most about us? 🥺",
+  options: ["Distance", "Misunderstanding", "Losing you 💔", "Nothing 😌"],
+  answer: 2,
+  compliment: "Tum meri sabse badi strength ho 🫂"
+},
+  {
+  q: "Where did we meet for the very first time? 🥺",
+  options: ["College Canteen", "Kit College", "Ramadevi ", "PSIT Gate "],
+  answer: 0,
+  compliment: "Remember the last paneer ka tukda  😌"
+}
+
+];
+
+let current = 0;
+let musicStarted = false;
+
+function createSparkles(){
+    const box = document.getElementById("box");
+    for(let i=0;i<8;i++){
+        const s = document.createElement("div");
+        s.className="sparkle";
+        s.style.left=Math.random()*box.offsetWidth+"px";
+        s.style.top=Math.random()*box.offsetHeight+"px";
+        box.appendChild(s);
+        setTimeout(()=>s.remove(),1500);
+    }
+}
+function createFloatingQuestionsGlobal(){
+    for(let i=0; i<3; i++){
+        const q = document.createElement("div");
+        q.className = "floating-question-global";
+        q.innerText = "❓";
+        q.style.left = Math.random() * window.innerWidth + "px";
+        q.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(q);
+
+        setTimeout(() => q.remove(), 3000); // remove after animation
+    }
+}
+
+// spawn every 700ms
+setInterval(createFloatingQuestionsGlobal, 700);
+
+setInterval(createSparkles,600); 
+function loadQuestion(){
+    document.getElementById("compliment").innerText = "";
+
+    const questionEl = document.getElementById("question");
+    questionEl.classList.remove("question-animate");
+    void questionEl.offsetWidth;
+    questionEl.innerText = quiz[current].q;
+    questionEl.classList.add("question-animate");
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    quiz[current].options.forEach((opt,index)=>{
+        const btn=document.createElement("button");
+        btn.innerText=opt;
+        btn.onclick=()=>checkAnswer(index);
+        btn.classList.add("option-animate");
+        btn.style.animationDelay=index*0.15+"s";
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function checkAnswer(index){
+
+    // 🎵 Start music on FIRST user interaction
+    if(!musicStarted){
+        const music = document.getElementById("bgMusic");
+        music.volume = 0.4; // romantic soft volume
+        music.play();
+        musicStarted = true;
+    }
+
+    if(index === quiz[current].answer){
+        document.getElementById("compliment").innerText =
+            quiz[current].compliment;
+
+        setTimeout(()=>{
+            current++;
+            if(current < quiz.length){
+                loadQuestion();
+            } else {
+                window.location.href = "video.html";
+            }
+        },1500);
+    } else {
+        document.getElementById("compliment").innerText =
+            "Hmm 🤨 ye galat hai… dobara socho Betu 😌";
+    }
+}
+
+loadQuestion();
+</script>
+ 
+</body>
+</html>
